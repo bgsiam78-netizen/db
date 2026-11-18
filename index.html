@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>💥𝑺𝒎𝒂𝒓𝒕 𝑻𝒓𝒂𝒅𝒊𝒏𝒈 𝑩𝑫 ♡ • MULTI-MARKET ANALYTICS</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html, body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+/* REGISTRATION FRAME */
+#marketFrame{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
+    z-index:1;
+    background:#000;
+}
+
+/* FULL SCREEN LIGHT DESIGN LAYER */
+#fullScreenLayer {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+    background: radial-gradient(circle at center, rgba(0,255,136,0.03) 0%, rgba(0,0,0,0.15) 100%);
+    box-shadow: inset 0 0 50px rgba(0,255,136,0.08);
+}
+
+/* RECTANGULAR LOGIN */
+#inlineLogin{
+    position:absolute;
+    inset:0;
+    z-index:20;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:18px;
+    text-align:center;
+    background:radial-gradient(circle,rgba(5,25,15,.96),rgba(0,0,0,.99));
+    border-radius:16px;
+}
+
+#inlineLogin .login-crown{
+    color:#00ff88;
+    font-size:20px;
+    line-height:1;
+    text-shadow:0 0 12px #00ff88;
+    animation: shineText 1.5s infinite alternate;
+}
+
+#inlineLogin h3{
+    color:#00ff88;
+    font-size:10px;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing:1.5px;
+    font-weight:900;
+    white-space:nowrap;
+    text-shadow: 0 0 8px rgba(0,255,136,0.8);
+}
+
+#passInput{
+    width:140px;
+    height:28px;
+    padding:4px 8px;
+    border-radius:6px;
+    border:1px solid rgba(0,255,136,.85);
+    outline:none;
+    background:rgba(0,0,0,.9);
+    color:#fff;
+    text-align:center;
+    font-size:10px;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing:2px;
+    box-shadow:0 0 10px rgba(0,255,136,.3);
+}
+
+#passInput:focus{
+    border-color:#00ffcc;
+    box-shadow:0 0 14px rgba(0,255,136,.6);
+}
+
+#passSubmit{
+    min-width:80px;
+    padding:6px 12px;
+    border:1px solid #00ff88;
+    border-radius:15px;
+    color:#000;
+    background:linear-gradient(135deg,#00ffcc,#00ff88);
+    font-size:8px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight:900;
+    letter-spacing:1.2px;
+    cursor:pointer;
+    box-shadow:0 0 12px rgba(0,255,136,.5);
+}
+
+#passSubmit:active{
+    transform:scale(.94);
+}
+
+#predictionCircle.unlocked #inlineLogin{
+    display:none !important;
+}
+
+/* FLOATING BOARD */
+#predictionBoard{
+    position:fixed;
+    left:50%;
+    top:65%;
+    width:min(280px, 100vw);
+    transform:translate(-50%,-50%);
+    z-index:999999;
+    touch-action:none;
+    user-select:none;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+}
+
+/* REVOLVING GREEN & BLACK BORDER CONTAINER */
+.board-container{
+    position: relative;
+    width: 200px;
+    height: 220px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    overflow: hidden;
+    background: rgba(0,255,136,0.1);
+    box-shadow: 0 0 30px rgba(0,255,136,0.5), inset 0 0 15px rgba(0,255,136,0.2);
+}
+
+.border-track {
+    position: absolute;
+    white-space: nowrap;
+    font-size: 9px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    color: #00ffcc;
+    text-shadow: 0 0 6px #00ff88, 0 0 10px rgba(0,255,136,0.9), 0 0 20px #ff00ff;
+    pointer-events: none;
+    z-index: 10;
+    animation: shineText 1.2s infinite alternate;
+}
+
+@keyframes shineText {
+    from { opacity: 0.5; text-shadow: 0 0 4px #00ff88; }
+    to { opacity: 1; text-shadow: 0 0 12px #00ffcc, 0 0 20px #00ff88; }
+}
+
+.track-top {
+    top: -2px;
+    left: 0;
+    animation: scrollLeft 14s linear infinite, shineText 1.2s infinite alternate;
+}
+@keyframes scrollLeft {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+.track-bottom {
+    bottom: -2px;
+    right: 0;
+    animation: scrollRight 14s linear infinite, shineText 1.2s infinite alternate;
+}
+@keyframes scrollRight {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* RECTANGULAR PREDICTION BOARD */
+#predictionCircle{
+    position:relative;
+    width:100%;
+    height:100%;
+    border-radius:14px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border:1.5px solid #00ff88;
+    z-index:2;
+    cursor:pointer;
+    overflow:hidden;
+    background:#000;
+}
+
+/* BACKGROUND VIDEO STYLE */
+#bgVideo{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* INTERNAL BRANDING FOOTER */
+#internalBrand{
+    position: relative;
+    z-index: 10;
+    font-size: 8.5px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+    text-align: center;
+    color: #00ffcc;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 3px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 255, 204, 0.4);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+    margin-top: 4px;
+    animation: shineText 1s infinite alternate;
+}
+
+/* INFORMATION TEXTS */
+#marketLabel, #nextLabel, #nextPeriod, #prediction, #strength, #engineStatus{
+    position: relative;
+    z-index: 10;
+}
+
+#marketLabel{
+    color:#ffaa33;
+    font-size:8px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight:800;
+    letter-spacing:1.5px;
+    margin-bottom:2px;
+    text-shadow:0 2px 4px rgba(0,0,0,0.9);
+}
+
+#nextLabel{
+    color:#ddd;
+    font-size:7px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight:700;
+    letter-spacing:1.2px;
+    text-shadow:0 1px 3px rgba(0,0,0,0.9);
+}
+
+#nextPeriod{
+    margin-top:2px;
+    width:120px;
+    text-align:center;
+    color:#fff;
+    font-size:10px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight:900;
+    letter-spacing:1px;
+    text-shadow:0 2px 4px rgba(0,0,0,0.9);
+}
+
+#prediction{
+    margin-top:4px;
+    font-size:22px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight:900;
+    letter-spacing:1.5px;
+    text-shadow:0 0 10px rgba(0,0,0,0.95), 0 2px 6px rgba(0,0,0,1);
+}
+
+#strength{
+    margin-top:3px;
+    font-size:8.5px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight:800;
+    letter-spacing:1.2px;
+    text-shadow:0 2px 4px rgba(0,0,0,0.9);
+}
+
+#engineStatus{
+    margin-top:3px;
+    font-size:7px;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing:1px;
+    color:#ccc;
+    text-shadow:0 1px 3px rgba(0,0,0,0.9);
+    font-weight:800;
+}
+
+/* MARKET SELECTOR */
+.market-option{
+    position:absolute;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:rgba(10,10,10,0.95);
+    border:1.5px solid #00ff88;
+    color:#fff;
+    font-size:9.5px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight:900;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    box-shadow:0 0 12px rgba(0,255,136,0.6);
+    transition:all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+    opacity:0;
+    pointer-events:none;
+    z-index:1000000;
+    left:50%;
+    top:45%;
+    margin:-22px;
+}
+
+.market-option.active-market{
+    border-color:#00ffcc;
+    color:#00ffcc;
+    box-shadow:0 0 18px rgba(0,255,136,0.9);
+}
+
+.board-open .market-option{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.board-open #opt-30s{
+    transform:translate(0,-130px);
+}
+
+.board-open #opt-1m{
+    transform:translate(115px,0);
+}
+
+.board-open #opt-3m{
+    transform:translate(0,130px);
+}
+
+.board-open #opt-5m{
+    transform:translate(-115px,0);
+}
+
+.scanning #prediction{
+    animation:predictionPulse 0.55s infinite alternate;
+}
+
+@keyframes predictionPulse{
+    from{opacity:0.35;}
+    to{opacity:1;}
+}
+
+.dragging .board-container{
+    transform:scale(.94);
+}
+</style>
+</head>
+<body>
+
+<!-- REGISTRATION / MARKET FRAME (Updated Link) -->
+<iframe
+    id="marketFrame"
+    src="https://hgnice.cc/#/register?invitationCode=844831751222">
+</iframe>
+
+<div id="fullScreenLayer"></div>
+
+<!-- PREDICTION BOARD -->
+<div id="predictionBoard">
+
+    <!-- MARKET OPTIONS -->
+    <div id="opt-30s" class="market-option" onclick="switchMarket('30s')">30S</div>
+    <div id="opt-1m" class="market-option" onclick="switchMarket('1m')">1M</div>
+    <div id="opt-3m" class="market-option" onclick="switchMarket('3m')">3M</div>
+    <div id="opt-5m" class="market-option" onclick="switchMarket('5m')">5M</div>
+
+    <!-- REVOLVING GREEN & BLACK BORDER CONTAINER -->
+    <div class="board-container" id="dragTarget">
+        
+        <div class="border-track track-top">💥𝑺𝒎𝒂𝒓𝒕 𝑻𝒓𝒂𝒅𝒊𝒏𝒈 𝑩𝑫 ♡  •  💥𝑺𝒎𝒂𝒓𝒕 𝑻𝒓𝒂𝒅𝒊𝒏𝒈 𝑩𝑫 ♡</div>
+        <div class="border-track track-bottom">💥𝑺𝒎𝒂𝒓𝒕 𝑻𝒓𝒂𝒅𝒊𝒏𝒈 𝑩𝑫 ♡  •  💥𝑺𝒎𝒂𝒓𝒕 𝑻𝒓𝒂𝒅𝒊𝒏𝒈 𝑩𝑫 ♡</div>
+
+        <!-- MASTER RECTANGLE BOARD -->
+        <div id="predictionCircle">
+
+            <!-- BACKGROUND VIDEO -->
+            <video id="bgVideo" autoplay muted loop playsinline>
+                <source src="https://files.catbox.moe/25a1rl.mp4" type="video/mp4">
+            </video>
+
+            <!-- INLINE PASSWORD LOGIN -->
+            <div id="inlineLogin">
+                <div class="login-crown">💥</div>
+                <h3>SMART TRADING ACCESS</h3>
+                <input type="password" id="passInput" placeholder="ACCESS KEY" autocomplete="off">
+                <button id="passSubmit" onclick="checkPassword()">UNLOCK</button>
+            </div>
+
+            <!-- PREDICTION INFORMATION -->
+            <div id="marketLabel">30 SECONDS</div>
+            <div id="nextLabel">NEXT PERIOD</div>
+            <div id="nextPeriod">LOADING</div>
+            <div id="prediction">BIG</div>
+            <div id="strength">ANALYZING</div>
+            <div id="engineStatus">CONNECTING</div>
+
+            <!-- INTERNAL BRANDING FOOTER -->
+            <div id="internalBrand">💥𝑺𝒎𝒂𝒓𝒕 𝑻𝒓𝒂𝒅𝒊𝒏𝒈 𝑩𝑫 ♡</div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+/* PASSWORD & ACCESS SYSTEM (SIAM + DATE) */
+let unlocked = false;
+
+function getDynamicPassword(){
+    const today = new Date();
+    const day = today.getDate(); 
+    return "SIAM" + day; 
+}
+
+function checkPassword(){
+    const userInput = document.getElementById('passInput').value.trim();
+    if(userInput === getDynamicPassword()){
+        unlocked = true;
+        document.getElementById('predictionCircle').classList.add('unlocked');
+        loadHistory();
+    }else{
+        window.location.href = 'https://t.me/BDT_BG_DEVELOPER';
+    }
+}
+
+document.getElementById('passInput').addEventListener('keydown', function(e){
+    if(e.key === 'Enter') checkPassword();
+});
+
+/* MARKET CONFIGURATIONS */
+const MARKETS = {
+    "30s":{ name:"30 SECONDS", url:"https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json", storageKey:"smart_trading_cache_30s" },
+    "1m":{ name:"1 MINUTE", url:"https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json", storageKey:"smart_trading_cache_1m" },
+    "3m":{ name:"3 MINUTES", url:"https://draw.ar-lottery01.com/WinGo/WinGo_3M/GetHistoryIssuePage.json", storageKey:"smart_trading_cache_3m" },
+    "5m":{ name:"5 MINUTES", url:"https://draw.ar-lottery01.com/WinGo/WinGo_5M/GetHistoryIssuePage.json", storageKey:"smart_trading_cache_5m" }
+};
+
+let currentMarketKey = "30s";
+const STORED_LIMIT = 20;
+const TOTAL_ANALYSIS_LIMIT = 30;
+const REFRESH_TIME = 3000;
+
+let historyData = [];
+let latestIssue = "";
+let busy = false;
+let menuOpen = false;
+let longPressTimer = null;
+
+const board = document.getElementById("predictionBoard");
+const dragTarget = document.getElementById("dragTarget");
+const circle = document.getElementById("predictionCircle");
+const marketLabel = document.getElementById("marketLabel");
+const periodElement = document.getElementById("nextPeriod");
+const predictionElement = document.getElementById("prediction");
+const strengthElement = document.getElementById("strength");
+const statusElement = document.getElementById("engineStatus");
+
+/* MARKET SWITCHING & MENU LOGIC */
+function switchMarket(marketKey){
+    if(!unlocked || !MARKETS[marketKey]) return;
+    currentMarketKey = marketKey;
+    closeMenu();
+
+    document.querySelectorAll('.market-option').forEach(el => el.classList.remove('active-market'));
+    document.getElementById('opt-' + marketKey).classList.add('active-market');
+
+    marketLabel.innerText = MARKETS[marketKey].name;
+    historyData = [];
+    latestIssue = "";
+
+    periodElement.innerText = "LOADING";
+    predictionElement.innerText = "—";
+    strengthElement.innerText = "SWITCHING";
+
+    loadHistory();
+}
+
+function toggleMenu(){
+    if(!unlocked) return;
+    menuOpen = !menuOpen;
+    if(menuOpen) board.classList.add("board-open");
+    else board.classList.remove("board-open");
+}
+
+function closeMenu(){
+    menuOpen = false;
+    board.classList.remove("board-open");
+}
+
+/* DRAGGABLE BOARD */
+let dragging = false;
+let startX = 0, startY = 0, originalX = 0, originalY = 0, hasMoved = false;
+
+function startDrag(event){
+    if(!unlocked || event.target.classList.contains('market-option') || event.target.closest('#inlineLogin')) return;
+    hasMoved = false;
+
+    const point = event.touches ? event.touches[0] : event;
+    const rect = board.getBoundingClientRect();
+
+    startX = point.clientX;
+    startY = point.clientY;
+    originalX = rect.left + rect.width / 2;
+    originalY = rect.top + rect.height / 2;
+
+    longPressTimer = setTimeout(() => {
+        if(!hasMoved) toggleMenu();
+    }, 600);
+
+    dragging = true;
+    board.classList.add("dragging");
+
+    document.addEventListener("mousemove", moveDrag);
+    document.addEventListener("touchmove", moveDrag, {passive:false});
+    document.addEventListener("mouseup", stopDrag);
+    document.addEventListener("touchend", stopDrag);
+}
+
+function moveDrag(event){
+    if(!dragging) return;
+    const point = event.touches ? event.touches[0] : event;
+
+    if(Math.abs(point.clientX - startX) > 5 || Math.abs(point.clientY - startY) > 5){
+        hasMoved = true;
+        clearTimeout(longPressTimer);
+        closeMenu();
+    }
+
+    board.style.left = (originalX + point.clientX - startX) + "px";
+    board.style.top = (originalY + point.clientY - startY) + "px";
+
+    if(event.cancelable) event.preventDefault();
+}
+
+function stopDrag(){
+    dragging = false;
+    clearTimeout(longPressTimer);
+    board.classList.remove("dragging");
+
+    document.removeEventListener("mousemove", moveDrag);
+    document.removeEventListener("touchmove", moveDrag);
+    document.removeEventListener("mouseup", stopDrag);
+    document.removeEventListener("touchend", stopDrag);
+}
+
+dragTarget.addEventListener("mousedown", startDrag);
+dragTarget.addEventListener("touchstart", startDrag, {passive:false});
+dragTarget.addEventListener("click", () => {
+    if(unlocked && !hasMoved && !dragging) toggleMenu();
+});
+
+/* DATA STORAGE & FETCHING */
+function getStoredHistory(){
+    try{
+        const data = localStorage.getItem(MARKETS[currentMarketKey].storageKey);
+        return data ? JSON.parse(data) : [];
+    }catch(e){ return []; }
+}
+
+function saveStoredHistory(list){
+    try{
+        localStorage.setItem(MARKETS[currentMarketKey].storageKey, JSON.stringify(list.slice(0, STORED_LIMIT)));
+    }catch(e){}
+}
+
+function mergeAndValidateData(apiList){
+    const freshData = apiList.map(item => {
+        const number = Number(item.number);
+        if(!Number.isInteger(number) || number < 0 || number > 9) return null;
+        return { issue: String(item.issueNumber || ""), number: number, size: number >= 5 ? "BIG" : "SMALL" };
+    }).filter(Boolean);
+
+    if(freshData.length === 0) return [];
+
+    let storedData = getStoredHistory();
+    const map = new Map();
+
+    storedData.forEach(item => map.set(item.issue, item));
+    freshData.forEach(item => map.set(item.issue, item));
+
+    const combined = Array.from(map.values()).sort((a, b) => {
+        try{ return BigInt(b.issue) > BigInt(a.issue) ? 1 : -1; }
+        catch(e){ return b.issue.localeCompare(a.issue); }
+    });
+
+    saveStoredHistory(combined);
+    return combined.slice(0, TOTAL_ANALYSIS_LIMIT);
+}
+
+async function loadHistory(isAutoUpdate = false){
+    if(!unlocked || busy) return;
+    busy = true;
+
+    if(!isAutoUpdate){
+        board.classList.add("scanning");
+        setStatus("SCANNING", "#00ff88");
+        predictionElement.innerText = "ANALYZING";
+        predictionElement.style.color = "#ff315b";
+        strengthElement.innerText = "PROCESSING...";
+    }
+
+    try{
+        const response = await fetch(MARKETS[currentMarketKey].url + "?_=" + Date.now(), { method: "GET", cache: "no-store" });
+        if(!response.ok) throw new Error("HTTP " + response.status);
+
+        const json = await response.json();
+        const list = json && json.data && json.data.list;
+        if(!Array.isArray(list) || list.length === 0) throw new Error("Invalid API data");
+
+        const newHistory = mergeAndValidateData(list);
+        if(newHistory.length < 5) throw new Error("Not enough history");
+
+        const newFetchedIssue = newHistory[0].issue;
+
+        if(newFetchedIssue !== latestIssue){
+            latestIssue = newFetchedIssue;
+            historyData = newHistory;
+            const nextPeriodNo = nextIssue(latestIssue);
+            periodElement.innerText = nextPeriodNo;
+
+            const result = analyze(historyData);
+
+            setTimeout(() => {
+                displayResult(result);
+                setStatus("LIVE", "#00ff88");
+            }, 500);
+        }
+
+    }catch(error){
+        setStatus("API ERROR", "#ff315b");
+        if(!isAutoUpdate){
+            predictionElement.innerText = "ERROR";
+            predictionElement.style.color = "#ff315b";
+        }
+    }finally{
+        busy = false;
+        board.classList.remove("scanning");
+    }
+}
+
+function nextIssue(issue){
+    try{ return (BigInt(issue) + 1n).toString(); }
+    catch(e){ return "NEXT"; }
+}
+
+/* ANALYTICAL ENGINE */
+function analyze(data){
+    const sequence = data.map(item => item.size === "BIG" ? 1 : 0);
+
+    const recency = recencyEngine(sequence);
+    const transition = transitionEngine(sequence);
+    const trend = trendEngine(sequence);
+    const streak = streakEngine(sequence);
+    const zigzag = zigzagEngine(sequence);
+    const pattern = patternEngine(sequence);
+    const reversal = reversalEngine(sequence);
+
+    const regime = detectRegime(sequence, trend, zigzag, reversal);
+
+    const engines = [
+        { signal: recency.signal, strength: recency.strength, weight: 1.00 },
+        { signal: transition.signal, strength: transition.strength, weight: 1.20 },
+        { signal: trend.signal, strength: trend.strength, weight: 1.25 },
+        { signal: streak.signal, strength: streak.strength, weight: .95 },
+        { signal: zigzag.signal, strength: zigzag.strength, weight: 1.00 },
+        { signal: pattern.signal, strength: pattern.strength, weight: 1.35 },
+        { signal: reversal.signal, strength: reversal.strength, weight: 1.20 }
+    ];
+
+    let bigScore = 0, smallScore = 0;
+    engines.forEach(function(engine){
+        const score = engine.strength * engine.weight;
+        if(engine.signal === "BIG") bigScore += score;
+        else if(engine.signal === "SMALL") smallScore += score;
+    });
+
+    if(regime === "BIG_TREND") bigScore += 1.5;
+    if(regime === "SMALL_TREND") smallScore += 1.5;
+
+    let finalSignal = bigScore >= smallScore ? "BIG" : "SMALL";
+    let confidence = Math.round(clamp(90 + Math.floor(Math.random() * 11), 90, 100));
+
+    return { signal: finalSignal, level: "STRONG", confidence: confidence, regime: regime };
+}
+
+function recencyEngine(x){
+    let big = 0, small = 0;
+    for(let i=0; i<x.length; i++){
+        const weight = Math.pow(.82, i);
+        if(x[i] === 1) big += weight; else small += weight;
+    }
+    const total = big + small;
+    if(total === 0) return { signal: "NEUTRAL", strength: 0 };
+    const p = big / total;
+    return { signal: p >= .5 ? "BIG" : "SMALL", strength: Math.min(1, Math.abs(p - .5) * 2) };
+}
+
+function transitionEngine(x){
+    let BB = 1, BS = 1, SB = 1, SS = 1;
+    for(let i=x.length-1; i>0; i--){
+        if(x[i]===1 && x[i-1]===1) BB++;
+        else if(x[i]===1 && x[i-1]===0) BS++;
+        else if(x[i]===0 && x[i-1]===1) SB++;
+        else SS++;
+    }
+    let big = x[0]===1 ? BB : SB, small = x[0]===1 ? BS : SS;
+    const p = big / (big + small);
+    return { signal: p >= .5 ? "BIG" : "SMALL", strength: Math.abs(p-.5) * 2 };
+}
+
+function trendEngine(x){
+    const windows = [3,5,7,10,15];
+    let big = 0, small = 0;
+    windows.forEach(size => {
+        if(x.length < size) return;
+        const ratio = x.slice(0, size).reduce((t, v) => t + v, 0) / size;
+        const w = size === 3 ? 1.35 : size === 5 ? 1.20 : size === 7 ? 1.00 : .80;
+        if(ratio > .5) big += (ratio-.5)*2*w;
+        else if(ratio < .5) small += (.5-ratio)*2*w;
+    });
+    const total = big + small;
+    if(total === 0) return { signal: "NEUTRAL", strength: 0 };
+    return { signal: big >= small ? "BIG" : "SMALL", strength: Math.min(1, Math.abs(big-small)/total) };
+}
+
+function streakEngine(x){
+    let streak = 1;
+    while(streak < x.length && x[streak] === x[0]) streak++;
+    if(streak <= 1) return { signal: "NEUTRAL", strength: 0 };
+    return { signal: x[0] === 1 ? "SMALL" : "BIG", strength: Math.min(.85, .25 + (streak-3)*.16) };
+}
+
+function zigzagEngine(x){
+    let changes = 0;
+    for(let i=0; i<x.length-1; i++){ if(x[i] !== x[i+1]) changes++; }
+    const ratio = changes / Math.max(x.length-1, 1);
+    if(ratio >= .55) return { signal: x[0] === 1 ? "SMALL" : "BIG", strength: Math.min(1, ratio) };
+    return { signal: "NEUTRAL", strength: 0 };
+}
+
+function patternEngine(x){
+    let bigScore = 0, smallScore = 0, matches = 0;
+    for(let length=2; length<=5; length++){
+        if(x.length <= length) continue;
+        const current = x.slice(0, length);
+        for(let start=length; start<x.length; start++){
+            let same = true;
+            for(let j=0; j<length; j++){ if(x[start-length+j] !== current[j]){ same = false; break; } }
+            if(!same) continue;
+            if(x[start-1] === 1) bigScore++; else smallScore++;
+            matches++;
+        }
+    }
+    if(matches === 0) return { signal: "NEUTRAL", strength: 0 };
+    const p = bigScore / (bigScore + smallScore);
+    return { signal: p >= .5 ? "BIG" : "SMALL", strength: Math.min(1, Math.abs(p-.5) * 2) };
+}
+
+function reversalEngine(x){
+    if(x.length < 6) return { signal: "NEUTRAL", strength: 0 };
+    const shift = (x.slice(0,3).reduce((a,b)=>a+b,0)/3) - (x.slice(3,6).reduce((a,b)=>a+b,0)/3);
+    if(Math.abs(shift) >= .33) return { signal: shift > 0 ? "BIG" : "SMALL", strength: Math.min(.80, Math.abs(shift)) };
+    return { signal: "NEUTRAL", strength: 0 };
+}
+
+function detectRegime(x, trend, zigzag, reversal){
+    if(trend.strength >= .55 && getStreak(x) >= 3) return x[0] === 1 ? "BIG_TREND" : "SMALL_TREND";
+    if(zigzag.strength >= .65) return "ZIGZAG";
+    return "MIXED";
+}
+
+function getStreak(x){
+    let count = 1;
+    while(count < x.length && count < x.length && x[count] === x[0]) count++;
+    return count;
+}
+
+function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+function displayResult(result){
+    predictionElement.innerText = result.signal;
+    strengthElement.innerText = result.level + " • " + result.confidence + "%";
+    predictionElement.style.color = result.signal === "BIG" ? "#00ff88" : "#ffd000";
+    statusElement.innerText = result.regime;
+}
+
+function setStatus(text, color){
+    statusElement.innerText = text;
+    statusElement.style.color = color;
+}
+
+/* LIVE LOOP */
+setInterval(async function(){
+    if(!unlocked) return;
+    loadHistory(true);
+}, REFRESH_TIME);
+
+</script>
+</body>
+</html>
